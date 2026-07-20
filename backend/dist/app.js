@@ -11,6 +11,8 @@ const morgan_1 = __importDefault(require("morgan"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const database_1 = require("./config/database");
 const auth_routes_1 = __importDefault(require("./modules/auth/auth.routes"));
+const pdf_chat_routes_1 = __importDefault(require("./modules/pdf-chat/pdf-chat.routes"));
+const db_analyser_routes_1 = __importDefault(require("./modules/db-analyser/db-analyser.routes"));
 const errorHandler_1 = require("./shared/middleware/errorHandler");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
@@ -23,10 +25,10 @@ app.get('/health', (_req, res) => {
     res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 app.use('/api/auth', auth_routes_1.default);
-// TODO: Mount pdf-chat module router — /api/pdf-chat
+app.use('/api/pdf-chat', pdf_chat_routes_1.default);
+app.use('/api/db-analyser', db_analyser_routes_1.default);
 // TODO: Mount resume-analyser module router — /api/resume-analyser
 // TODO: Mount document-analyser module router — /api/document-analyser
-// TODO: Mount db-analyser module router — /api/db-analyser
 app.use(errorHandler_1.errorHandler);
 const startServer = async () => {
     await (0, database_1.initializeDatabase)();
